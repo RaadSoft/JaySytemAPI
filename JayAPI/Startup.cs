@@ -32,6 +32,15 @@ namespace JayAPI
                 options.UseMySql(connection,b=>b.MigrationsAssembly("JayAPI"))
             );
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", p =>
+                {
+                    p.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
             services.AddMvc();
             services.AddScoped<IClienteRepository, ClienteRepository>();
         }
@@ -43,7 +52,7 @@ namespace JayAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors("AllowAll");
             app.UseMvc();
         }
     }
